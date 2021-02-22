@@ -1,0 +1,27 @@
+import { Task } from 'src/tasks/task.entity';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
+
+@Entity()
+@Unique(['username'])
+export class User extends BaseEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
+  @Column()
+  username: string;
+  @Column()
+  password: string;
+
+  @OneToMany((type) => Task, (task) => task.user, { eager: true })
+  tasks: Task[];
+  constructor(user: Partial<User>) {
+    super();
+    Object.assign(this, user);
+  }
+}
